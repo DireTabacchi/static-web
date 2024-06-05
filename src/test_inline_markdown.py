@@ -3,7 +3,8 @@ import unittest
 from inline_markdown import (
     split_nodes_delimiter,
     extract_markdown_images,
-    extract_markdown_links
+    extract_markdown_links,
+    split_nodes_image
 )
 
 from textnode import (
@@ -12,6 +13,7 @@ from textnode import (
     text_type_code,
     text_type_italic,
     text_type_bold,
+    text_type_image
 )
 
 
@@ -107,6 +109,32 @@ class TestInlineMarkdown(unittest.TestCase):
         ]
         actual = extract_markdown_links(text)
         self.assertListEqual(expected, actual)
+
+    def test_split_images(self):
+        node = TextNode(
+            "This is text with an ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) and ![another](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/dfsdkjfd.png)",
+            text_type_text,
+        )
+        expected = [
+            TextNode("This is text with an ", text_type_text),
+            TextNode("image", text_type_image, "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png"),
+            TextNode(" and ", text_type_text),
+            TextNode("another", text_type_image, "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/dfsdkjfd.png"),
+        ]
+        actual = split_nodes_image([node])
+        self.assertListEqual(expected, actual)
+
+    def test_split_images_image_first(self):
+        node = TextNode(
+            "![Thorn](https://upload.wikimedia.org/wikipedia/commons/8/8a/Latin_alphabet_%C3%9E%C3%BE.svg) was a letter in the English alphabet.",
+            text_type_text
+        )
+        expected = [
+            TextNode("Thorn", text_type_image, "https://upload.wikimedia.org/wikipedia/commons/8/8a/Latin_alphabet_%C3%9E%C3%BE.svg"),
+            TextNode(" was a letter in the English alphabet.", text_type_text),
+        ]
+        actual = split_nodes_image([node])
+        self.assertEqual(expected, actual)
 
 if __name__ == "__main__":
     unittest.main()
