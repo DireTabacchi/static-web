@@ -20,3 +20,7 @@ class TestLeafNode(unittest.TestCase):
         test_node = LeafNode(None, "This is raw text")
         expected = "This is raw text"
         self.assertEqual(expected, test_node.to_html())
+
+
+if __name__ == "__main__":
+    unittest.main()

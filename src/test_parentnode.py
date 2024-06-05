@@ -46,3 +46,6 @@ class TestLeafNode(unittest.TestCase):
         expected = '<p>If you are stuck, <b><a href="https://docs.python.org/3/">rtfm</a></b>. That\'s all there is to it.</p>'
         self.assertEqual(expected, node.to_html())
 
+
+if __name__ == "__main__":
+    unittest.main()

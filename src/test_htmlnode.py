@@ -12,3 +12,7 @@ class TestHTMLNode(unittest.TestCase):
         test_node = HTMLNode("p", "Hello world")
         expected_value = ''
         self.assertEqual(test_node.props_to_html(), expected_value)
+
+
+if __name__ == "__main__":
+    unittest.main()
