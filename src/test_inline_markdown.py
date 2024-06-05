@@ -4,7 +4,8 @@ from inline_markdown import (
     split_nodes_delimiter,
     extract_markdown_images,
     extract_markdown_links,
-    split_nodes_image
+    split_nodes_image,
+    split_nodes_link,
 )
 
 from textnode import (
@@ -13,7 +14,8 @@ from textnode import (
     text_type_code,
     text_type_italic,
     text_type_bold,
-    text_type_image
+    text_type_image,
+    text_type_link,
 )
 
 
@@ -135,6 +137,33 @@ class TestInlineMarkdown(unittest.TestCase):
         ]
         actual = split_nodes_image([node])
         self.assertEqual(expected, actual)
+
+    def test_split_links(self):
+        node = TextNode(
+            "If you can't exit VIM, try [google](https://www.google.com) or read the [documentation](https://neovim.io/doc/)",
+            text_type_text,
+        )
+        expected = [
+            TextNode("If you can't exit VIM, try ", text_type_text),
+            TextNode("google", text_type_link, "https://www.google.com"),
+            TextNode(" or read the ", text_type_text),
+            TextNode("documentation", text_type_link, "https://neovim.io/doc/"),
+        ]
+        actual = split_nodes_link([node])
+        self.assertListEqual(expected, actual)
+
+    def test_split_link_link_first(self):
+        node = TextNode(
+                "[Neovim](https://neovim.io) is a great text editor for the tinkerer.",
+            text_type_text,
+        )
+        expected = [
+            TextNode("Neovim", text_type_link, "https://neovim.io"),
+            TextNode(" is a great text editor for the tinkerer.", text_type_text),
+        ]
+        actual = split_nodes_link([node])
+        self.assertListEqual(expected, actual)
+
 
 if __name__ == "__main__":
     unittest.main()
