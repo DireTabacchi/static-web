@@ -34,7 +34,6 @@ def rec_generate_pages(dir_path_content, template_path, dest_dir_path):
         full_content_path = os.path.join(dir_path_content, content_path)
         if os.path.isfile(full_content_path):
             dest_file = f"{content_path.split(".")[0]}.html"
-            #print(f"dest_file: {dest_file}")
             dest = os.path.join(dest_dir_path, dest_file)
             generate_page(full_content_path, template_path, dest)
         else:
