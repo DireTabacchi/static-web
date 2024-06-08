@@ -28,3 +28,18 @@ def generate_page(from_path, template_path, dest_path):
     dest_fd = open(dest_path, 'w')
     dest_fd.write(final_html)
     dest_fd.close()
+
+def rec_generate_pages(dir_path_content, template_path, dest_dir_path):
+    for content_path in os.listdir(dir_path_content):
+        full_content_path = os.path.join(dir_path_content, content_path)
+        if os.path.isfile(full_content_path):
+            dest_file = f"{content_path.split(".")[0]}.html"
+            #print(f"dest_file: {dest_file}")
+            dest = os.path.join(dest_dir_path, dest_file)
+            generate_page(full_content_path, template_path, dest)
+        else:
+            rec_generate_pages(
+                full_content_path,
+                template_path,
+                os.path.join(dest_dir_path, content_path)
+            )

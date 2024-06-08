@@ -19,12 +19,13 @@ def main():
     print("Copying static files to public directory...")
     rec_copy_files(static_dir, public_dir)
 
-    print("Generating page...")
-    generation.generate_page(
-        os.path.join(content_dir, "index.md"),
-        template,
-        os.path.join(public_dir, "index.html")
-    )
+    print("Generating pages...")
+    #generation.generate_page(
+    #    os.path.join(content_dir, "index.md"),
+    #    template,
+    #    os.path.join(public_dir, "index.html")
+    #)
+    generation.rec_generate_pages(content_dir, template, public_dir)
 
 
 main()
